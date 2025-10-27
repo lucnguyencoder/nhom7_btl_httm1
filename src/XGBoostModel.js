@@ -1,7 +1,3 @@
-
-// XGBoostModel.js - Gradient Boosting Model cho dự báo dân số
-// File này chứa logic huấn luyện và dự đoán độc lập
-
 class XGBoostModel {
   constructor(config = {}) {
     this.numTrees = config.numTrees || 50;
@@ -70,6 +66,7 @@ class XGBoostModel {
     
     return { data: trainingData, featureNames };
   }
+
 
   // Xây dựng một decision tree
   buildTree(data, residuals, depth = 0) {
@@ -179,13 +176,11 @@ class XGBoostModel {
     const mean = arr.reduce((a, b) => a + b, 0) / arr.length;
     return arr.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / arr.length;
   }
-
   // Random subset cho feature sampling
   randomSubset(arr, size) {
     const shuffled = arr.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, size);
   }
-
   // Dự đoán với một tree
   predictTree(tree, features) {
     if (tree.isLeaf) {
@@ -269,7 +264,6 @@ class XGBoostModel {
       if (tree.right) this.updateFeatureImportance(tree.right, featureNames);
     }
   }
-
   // Dự đoán với mô hình đã huấn luyện
   predict(features) {
     if (!this.isTrained) {
@@ -284,7 +278,6 @@ class XGBoostModel {
 
     return prediction;
   }
-
   // Tính RMSE
   calculateRMSE(actual, predicted) {
     const mse = actual.reduce((sum, val, i) => {
@@ -292,14 +285,12 @@ class XGBoostModel {
     }, 0) / actual.length;
     return Math.sqrt(mse);
   }
-
   // Tính MAE
   calculateMAE(actual, predicted) {
     return actual.reduce((sum, val, i) => {
       return sum + Math.abs(val - predicted[i]);
     }, 0) / actual.length;
   }
-
   // Tính R²
   calculateR2(actual, predicted) {
     const mean = actual.reduce((a, b) => a + b, 0) / actual.length;
@@ -307,7 +298,6 @@ class XGBoostModel {
     const ssResidual = actual.reduce((sum, val, i) => sum + Math.pow(val - predicted[i], 2), 0);
     return 1 - (ssResidual / ssTotal);
   }
-
   // Lưu mô hình
   saveModel() {
     return {
@@ -324,9 +314,8 @@ class XGBoostModel {
       isTrained: this.isTrained
     };
   }
-
   // Load mô hình đã lưu
-  loadModel(savedModel) {
+ loadModel(savedModel) {
     this.trees = savedModel.trees;
     this.numTrees = savedModel.config.numTrees;
     this.learningRate = savedModel.config.learningRate;
